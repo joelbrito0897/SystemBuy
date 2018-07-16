@@ -1,0 +1,41 @@
+﻿@model Ventas.Models.Product
+
+@{
+    ViewBag.Title = "Detales";
+}
+
+<h3>Detalles Producto</h3>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Category.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Category.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Price)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ID },new { @class = "btn btn-success" }) |
+    @Html.ActionLink("Volver a la lista", "Index",null,new { @class="btn btn-secondary"})
+</p>

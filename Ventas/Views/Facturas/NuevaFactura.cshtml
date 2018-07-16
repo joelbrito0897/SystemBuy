@@ -1,0 +1,366 @@
+﻿@model Ventas.Models.Factura
+@{
+    ViewBag.Title = "Nueva Factura";
+}
+<script src="~/Content/js/jquery.min.js"></script>
+<h3>Nueva Factura</h3>
+<script>
+  
+
+</script>
+<hr />
+<!-- Button trigger modal -->
+
+@using (Html.BeginForm("NuevaFactura", "Facturas"))
+{
+    @Html.AntiForgeryToken()
+
+<div class="Clientes">
+    <div class="row">
+        <div class="col-md-4 aling-right">
+            @Html.Label("Fecha", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Editor("Fecha", new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", disabled = "disabled" } })
+            @* @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+
+        </div>
+        <div class="col-md-6">
+            @Html.Hidden("ClienteID")
+            @Html.Label("Cliente", htmlAttributes: new { @class = "control-label col-md-2"})
+
+            <input type="text" id="ClienteName" name="ClienteName" class="form-control col-md-12" readonly />
+            @*@Html.Editor("ClienteName", new { htmlAttributes = new { @class = "form-control col-md-12 ", @readonly = "readonly", disabled = "disabled" } })*@
+            
+            @* @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+
+        </div>
+        <button type="button" class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#exampleModal" onclick="getClientes('/Facturas/ListaCliente')">
+            OBTENER CLIENTE
+        </button>
+      
+      
+    </div>
+</div>
+<hr />
+<div class="obtenerProductos">
+    <input type="button" name="product" id="product" class="btn btn-info" data-toggle="modal" data-target="#ModalProduct" onclick="buscarProducto('/Products/nameProProductsList')" value="Listado de Producto"/>
+</div>
+<hr />
+<div class="Descripcion col-md-8">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Cantidad</th>
+                <th>Producto</th>
+                <th>Sub-Total</th>
+                <th>Total</th>
+            </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listado de cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped" id="tbcliente">
+                    <thead>
+                        <tr>
+                            <th>Codigo</th>
+                            <th>Nombre</th>
+                    </thead>
+                    <tbody id="client"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" >Cerrar</button>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Product -->
+<div class="modal fade" id="ModalProduct" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Listado de producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+                 <div class="modal-body">
+                     
+                        <div class="row">
+                            <div class="col col-md-8">
+                                <input type="text" id="nameProduct" class="form-control" placeholder="Busqueda de productos" />
+
+                            </div>
+                         <button onclick="buscarProductos()" class="btn btn-success">Buscar</button>
+                        </div>
+
+                <table class="table table-striped" id="tbproduct">
+                   
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Precio</th>
+                            <th></th>
+                    </thead>
+                    <tbody id="productBody"></tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+<hr />
+
+<div class="row">
+    <div class="col-md-4 aling-right">
+        @Html.Label("Itbis", htmlAttributes: new { @class = "control-label col-md-2" })
+
+        <input type="text" id="Itbis" name="Itbis" class="form-control col-md-12" readonly value="0  " />
+        @*@Html.EditorFor(model => model.Itbis, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", disabled = "disabled" } })*@
+        @* @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })*@
+
+    </div>
+    <div class="col-md-4">
+        @Html.Label("Sub-Total", htmlAttributes: new { @class = "control-label col-md-3" })
+        @*@Html.Editor("SubTotale", new { htmlAttributes = new { @class = "form-control col-md-12 ", @readonly = "readonly", disabled = "disabled" } })*@
+        <input type="text" id="SubTotale" name="SubTotal" class="form-control col-md-12" readonly value="0  "/>
+    </div>
+    <div class="col-md-4">
+    @Html.Label("Total", htmlAttributes: new { @class = "control-label col-md-2" })
+        <input type="text" id="Total" name="Total" class="form-control col-md-12" readonly value="0  " />
+    @*@Html.EditorFor(model=>model.Total, new { htmlAttributes = new { @class = "form-control col-md-12 ", @readonly = "readonly", disabled = "disabled" } })*@
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Crear" class="btn btn-success" />
+        </div>
+    </div>
+</div>
+
+}
+
+<script>
+    
+    /*Cliente*/
+    function getClientes(action) {
+        
+        $.ajax({
+            type: "POST",
+            url: action,
+            success: function (response) {
+                if (response.length >= 1) {
+
+                    $('#client').empty();
+                    response.forEach(function (element) {
+
+
+                        $('#client').append("<tr><td>" + element["ID"] +"</td><td> " + element["Name"] +
+                            " " + element["LastName"] + "</td><td><button type='button'data-dismiss='modal' onclick='AgregarCliente("
+                            + element["ID"] + ")' class='btn btn-success'><span class='fa fa-plus'></span></button></td></tr>");
+                        
+                    });
+                }
+                else {
+
+                    alertify.error('Error al cargar los Clientes');
+                }
+            }
+        });
+    }
+
+    function AgregarCliente(id) {
+        $('#ClienteID').val(id);
+        
+        $.ajax({
+            type: "POST",
+            url: "ClienteName",
+            data: { id },
+            success: function (response) {
+                var name = response.Name + " " + response.LastName;
+                $('#ClienteName').val(name);
+                $('#client').empty();
+                alertify.success('Cliente Agregado Sastifactoriamente');
+            }
+        });
+    }
+
+    /*Cliente*/
+
+    $(document).ready(function () {
+        var date = new Date();
+
+        var time = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + " | " + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
+        $('#Fecha').val(time);
+
+        $('#nameProduct').on('keyup', function () {
+            var product = $('#nameProduct').val()
+            $.ajax({
+                type: "POST",
+                url: "/Products/nameProduct",
+                data: { product },
+                success: function (response) {
+                    if (response.length >= 1) {
+                        $('#productBody').empty();
+                        response.forEach(function (element) {
+                            
+                            $('#productBody').append("<tr><td>"
+                                + element["Name"] + "</td><td>" + element["Price"]
+                                + "</td><td><button type='button'data-dismiss='modal' onclick='AgregarProducto("
+                                + element["ID"] + ")' class='btn btn-success'><span class='fa fa-plus'></span></button></td></tr>");
+
+                           
+
+                        });
+                    }
+                }
+
+            })
+        })
+    });
+   
+   
+
+    /*Producto*/
+    //function buscarProductos() {
+    //    var product = $('#nameProduct').val()
+    //    $.ajax({
+    //        type: "POST",
+    //        url: "/Products/nameProduct",
+    //        data: { product},
+    //        success: function (response) {
+    //            console.log(response)
+    //            if (response.length >= 1) {
+    //                $('#productBody').empty();
+    //                response.forEach(function (element) {
+    //                    //console.log(name);
+    //                    $('#productBody').append("<tr><td>"
+    //                        + element["Name"] + "</td><td>" + element["Price"]
+    //                        + "</td><td><button type='button'data-dismiss='modal' onclick='AgregarProducto("
+    //                        + element["ID"] + ")' class='btn btn-success'><span class='fa fa-plus'></span></button></td></tr>");
+
+    //                });
+    //            } else {
+
+    //                alertify.error('No ahi producto que coincida');
+    //            }
+    //        }
+
+    //    })
+    //}
+    function buscarProducto(action) {
+        $.ajax({
+            type: "POST",
+            url: action,
+            success: function (response) {
+                if (response.length >= 1) {
+
+                    $('#productBody').empty();
+                    response.forEach(function (element) {
+
+                        $('#productBody').append("<tr><td>" + element["Name"] + "</td><td>" + element["Price"]
+                            + "</td><td><button type='button'data-dismiss='modal' onclick='AgregarProducto("
+                            + element["ID"] + ")' class='btn btn-success'><span class='fa fa-plus'></span></button></td></tr>");
+
+                    });
+                } else {
+                    alertify.error('Error al cargar los productos');
+                }
+            }
+
+        })
+    }
+
+    function AgregarProducto(id) {
+        nuevaFila();
+        $('#ProductID').val(id);
+            
+        $.ajax({
+            type: "POST",
+            url: "/Products/ProductName",
+            data: { id },
+            success: function (response) {
+                var product = {};
+                product.Name = response.Name;
+                product.Price = response.Price;
+
+                $('#ProductoName').val(product.Name);
+                $('#SubTotal').val(product.Price);
+                
+                   
+                
+                
+            }
+        });
+    };
+
+    function subTotal() {
+        if ($('#ProductID').val() != null) {
+            var cantidad = $('#Cantidad').val();
+
+            var precio = $('#SubTotal').val();
+            var Total = precio * cantidad;
+            //console.log(Total);
+            $('#total').val(Total);
+
+            subTotalGral(Total)
+            
+        }
+    }
+    function subTotalGral(Total) {
+
+        //var Total = $('#Total').val();
+        var subTotal = $('#SubTotale').val();
+
+        var result = parseInt(subTotal) + parseInt(Total);
+        var itbis = result * 0.18;
+        var totalgral = result + itbis;
+
+        var cant = $('#Cantidad').val();
+        if (cant == "" || cant==null) {
+            $('#SubTotale').val(0);
+            $('#Itbis').val(0);
+
+            $('#Total').val(0);
+        } else {
+
+            $('#SubTotale').val(result);
+
+            $('#Itbis').val(itbis);
+
+            $('#Total').val(totalgral);
+        }
+    }
+
+    function nuevaFila() {
+        var cadena = "<tr id='prueba'>";
+        cadena += "<input value='ID' type='hidden' class='form-control' style='width:50px' id='ProductID'>"
+        cadena += "<td><input type='text' onkeyup='subTotal()' class='form-control' style='width:70px' id='Cantidad'></td>"
+        cadena += "<td><input value='Producto' type='text' class='form-control' style='width:220px' readonly id='ProductoName'></td>"
+        cadena += "<td><input value='Subtotal' type='text' class='form-control' style='width:90px' readonly id='SubTotal'></td>"
+        cadena += "<td><input  type='text' class='form-control' style='width:90px' readonly id='total' name='totale[]'></td>"
+        cadena += "</tr>"
+
+     
+        $('#tbody').after(cadena);
+
+        
+    }
+
+</script>

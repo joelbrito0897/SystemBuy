@@ -1,0 +1,39 @@
+﻿@model Ventas.Models.Category
+
+@{
+    ViewBag.Title = "Borrar";
+}
+
+<h3>Borrar Categoria</h3>
+
+<h5>Esta seguro que desea borrar esto?</h5>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-danger" /> |
+            @Html.ActionLink("Volver a la listas", "Index",null, new { @class = "btn btn-secondary" })
+        </div>
+    }
+</div>

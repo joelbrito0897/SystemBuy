@@ -1,0 +1,110 @@
+﻿@model List<Ventas.Models.Customer>
+@{
+    ViewBag.Title = "ObtenerClientes";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/sb-admin.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/components-font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/libs/dropzone/dist/basic.css" rel="stylesheet" />
+    <link href="~/Content/libs/dropzone/dist/dropzone.css" rel="stylesheet" />
+    <title>Document</title>
+</head>
+<body>
+
+    <div class="container">
+        <h2>ObtenerClientes</h2>
+
+
+
+        <div class="panel panel-default">
+            <div class="panel-heading">Buscar Clientes en el Sistema</div>
+            <div class="panel-body">
+                @using (Html.BeginForm())
+            {
+                    <div class="form-horizontal">
+                        <h2 style="text-align:center; font-family:Arial; font-weight:700;">Buscar Cliente por:</h2>
+                        <fieldset>
+                            <div class="row" style="padding-bottom:8px;">
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Nombre", new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextBox("txtnombre", null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    @Html.Label("Codigo", new { @class = "control-label col-md-4" })
+                                    <div class="col-md-8">
+                                        @Html.TextBox("txtcliente", null, new { @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <input type="submit" value="Buscar" />
+                }
+            </div>
+        </div>
+
+        <table class="table table-striped" id="tbcliente">
+
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var objCliente in Model)
+            {
+                    <tr>
+                        <td>@objCliente.ID</td>
+                        <td>@objCliente.Name     @objCliente.LastName</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/js/bootstrap.bundle.min.js"></script>
+    <script src="~/Content/js/sb-admin.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+
+            $("#tbcliente tbody tr").dblclick(function () {
+                var Cliente = {};
+                var id,nombre;
+                id = Cliente.id = $(this).children().eq('0').text();
+                nombre = Cliente.nombre = $(this).children().eq('1').text() + " " + $(this).children().eq('2').text();
+              
+                console.info(id, nombre);
+                window.opener(obtenerCliente(Cliente));
+                window.close();
+
+
+
+            });
+
+            function obtenerCliente(Cliente) {
+
+                var watchclose = setInterval(function () {
+                    $("#ClienteID").val(Cliente.id);
+                    $("#ClienteName").val(Cliente.nombre);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

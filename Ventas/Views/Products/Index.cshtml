@@ -1,0 +1,33 @@
+﻿@model IEnumerable<Ventas.Models.Product>
+
+@{
+    ViewBag.Title = "Productos";
+}
+
+<h2>Productos</h2>
+
+<p>
+    @Html.ActionLink("Nuevo", "Create", null, new { @class = "btn btn-primary" })
+</p>
+<div class="row text-center">
+
+    <div class="col-lg-3 col-md-6 mb-4">
+        <div class="card">
+            @foreach (var item in Model)
+            {
+                <img class="card-img-top" src="~/Content/images/product/@(item.ID).jpg" alt="@Html.DisplayFor(modelItem => item.Name)">
+                <hr />
+                <div class="card-body">
+                    <h4 class="card-title">@Html.DisplayFor(modelItem => item.Name)</h4>
+                    <p class="card-text">@Html.DisplayFor(modelItem => item.Price)</p>
+                </div>
+                <div class="card-footer">
+                    @Html.ActionLink("Editar", "Edit", new { id = item.ID }, new { @class = "btn btn-success btn-sm" }) |
+                    @Html.ActionLink("Detalles", "Details", new { id = item.ID }, new { @class = "btn btn-info btn-sm" }) |
+                    @Html.ActionLink("Borrar", "Delete", new { id = item.ID }, new { @class = "btn btn-danger btn-sm" })
+                </div>
+            }
+           
+        </div>
+    </div>
+</div>

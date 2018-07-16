@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Ventas.Models.Factura>
+
+@{
+    ViewBag.Title = "Facturas";
+}
+
+<h2>Facturas</h2>
+
+<p>
+    @Html.ActionLink("Nuevo", "NuevaFactura", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Cliente")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Itbis)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SubTotal)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClienteName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Itbis)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SubTotal)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+        <td>
+            @Html.ActionLink("Delete", "Eliminar", new { id=item.ID }, new { @class = "btn btn-danger" })
+        </td>
+    </tr>
+}
+
+</table>
